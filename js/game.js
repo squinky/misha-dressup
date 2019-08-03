@@ -33,7 +33,7 @@ function initGame()
 	shuffle.cursor = "pointer";
 	shuffle.on("click", function(evt)
 	{
-		restartGame();
+		shuffleClothing();
 	});
 
 	initClothingItems("costume");
@@ -121,6 +121,18 @@ function placeClothingItem(item)
 	var zindex = Math.floor(Math.random() * stage.numChildren) + 1;
 
 	stage.addChildAt(item, zindex);
+}
+
+function shuffleClothing()
+{
+	for (n of clothing)
+	{
+		if (n.x <= 1200)
+		{
+			stage.removeChild(n);
+			placeClothingItem(n);
+		}
+	}
 }
 
 function fileExists(type, i)
