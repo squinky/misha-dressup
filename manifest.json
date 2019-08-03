@@ -16,5 +16,8 @@
 { "id": "costume14", "src": "img/costume14.png" },
 { "id": "costume15", "src": "img/costume15.png" },
 { "id": "costume16", "src": "img/costume16.png" },
-{ "id": "misha-body-smol", "src": "img/misha-body-smol.png" }
+{ "id": "misha-body-smol", "src": "img/misha-body-smol.png" },
+{ "id": "music-off", "src": "img/music-off.png" },
+{ "id": "music-on", "src": "img/music-on.png" },
+{ "id": "wayward-son", "src": "sfx/wayward-son.ogg" }
 ] }

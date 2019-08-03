@@ -1,4 +1,4 @@
-var bg, body, refresh;
+var bg, body, reset, shuffle;
 var clothing = [];
 
 var PILE_MIN_X = 75;
@@ -18,33 +18,42 @@ function initGame()
 	body.x = 1060;
 	body.y = 160;
 
-	// refresh = new createjs.Bitmap(queue.getResult("refresh"));
-	// refresh.x = 1685;
-	// refresh.y = 850;
-	// refresh.cursor = "pointer";
-	// refresh.on("click", function(evt)
-	// {
-	// 	restartGame();
-	// });
+	reset = new createjs.Shape();
+	reset.graphics.beginFill("#fff").drawRect(382, 40, 322, 65);
+	reset.alpha = 0.01;
+	reset.cursor = "pointer";
+	reset.on("click", function(evt)
+	{
+		restartGame();
+	});
+
+	shuffle = new createjs.Shape();
+	shuffle.graphics.beginFill("#fff").drawRect(750, 40, 428, 65);
+	shuffle.alpha = 0.01;
+	shuffle.cursor = "pointer";
+	shuffle.on("click", function(evt)
+	{
+		restartGame();
+	});
 
 	initClothingItems("costume");
 
-	// soundToggle = new createjs.Container();
-	// soundOff = new createjs.Bitmap(queue.getResult("soundoff"));
-	// soundOn = new createjs.Bitmap(queue.getResult("soundon"));
-	// soundToggle.x = 1750;
-	// soundToggle.y = 50;
-	// soundToggle.cursor = "pointer";
-	// soundToggle.addChild(soundOff);
-	// soundToggle.on("click", function(evt)
-	// {
-	// 	if (!music) music = createjs.Sound.play("vogue-midi", { loop: -1 });
-	// 	else music.paused = !music.paused;
+	soundToggle = new createjs.Container();
+	soundOff = new createjs.Bitmap(queue.getResult("music-off"));
+	soundOn = new createjs.Bitmap(queue.getResult("music-on"));
+	soundToggle.x = 1560;
+	soundToggle.y = 20;
+	soundToggle.cursor = "pointer";
+	soundToggle.addChild(soundOff);
+	soundToggle.on("click", function(evt)
+	{
+		if (!music) music = createjs.Sound.play("wayward-son", { loop: -1 });
+		else music.paused = !music.paused;
 
-	// 	soundToggle.removeAllChildren();
-	// 	if (music.paused) soundToggle.addChild(soundOff);
-	// 	else soundToggle.addChild(soundOn);
-	// });
+		soundToggle.removeAllChildren();
+		if (music.paused) soundToggle.addChild(soundOff);
+		else soundToggle.addChild(soundOn);
+	});
 }
 
 function startGame()
@@ -53,8 +62,9 @@ function startGame()
 
 	stage.addChild(bg);
 	stage.addChild(body);
-	// stage.addChild(refresh);
-	// stage.addChild(soundToggle);
+	stage.addChild(reset);
+	stage.addChild(shuffle);
+	stage.addChild(soundToggle);
 
 	var n;
 	for (n of clothing)
