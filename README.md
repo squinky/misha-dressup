@@ -1,5 +1,3 @@
-# Mx. Dressup
+# Misha Dressup
 
-by Squinky & Jeka
-
-for Global Game Jam 2019
+a remix of Mx. Dressup for GISH 2019

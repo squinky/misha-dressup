@@ -1,14 +1,11 @@
-var bg, body, face, skinToneChanger, faceChanger, currentSkinTone, currentFace, refresh;
-var bodies = [];
-var faces = [];
+var bg, body, refresh;
 var clothing = [];
 
 var PILE_MIN_X = 75;
-var PILE_MIN_Y = 250;
-var PILE_MAX_X = 960;
-var PILE_MAX_Y = 950;
+var PILE_MIN_Y = 500;
+var PILE_MAX_X = 1200;
+var PILE_MAX_Y = 960;
 
-var inspiration, prompt, grammar;
 var soundToggle, soundOn, soundOff, music;
 
 function initGame()
@@ -17,121 +14,37 @@ function initGame()
 
 	bg = new createjs.Bitmap(queue.getResult("bg"));
 
-	body = new createjs.Container();
-	body.x = 960;
-	
-	i = 1;
-	file = null;
-	while(true)
-	{
-		file = fileExists("col", i);
-		if (!file) break;
+	body = new createjs.Bitmap(queue.getResult("misha-body-smol"));
+	body.x = 1060;
+	body.y = 160;
 
-		var bodybmp = new createjs.Bitmap(file);
-		bodies.push(bodybmp);
+	// refresh = new createjs.Bitmap(queue.getResult("refresh"));
+	// refresh.x = 1685;
+	// refresh.y = 850;
+	// refresh.cursor = "pointer";
+	// refresh.on("click", function(evt)
+	// {
+	// 	restartGame();
+	// });
 
-		i++;
-	}
-	currentSkinTone = Math.floor(Math.random() * (bodies.length));
-	body.addChild(bodies[currentSkinTone]);
+	initClothingItems("costume");
 
-	face = new createjs.Container();
-	face.x = 1385;
-	face.y = 265;
+	// soundToggle = new createjs.Container();
+	// soundOff = new createjs.Bitmap(queue.getResult("soundoff"));
+	// soundOn = new createjs.Bitmap(queue.getResult("soundon"));
+	// soundToggle.x = 1750;
+	// soundToggle.y = 50;
+	// soundToggle.cursor = "pointer";
+	// soundToggle.addChild(soundOff);
+	// soundToggle.on("click", function(evt)
+	// {
+	// 	if (!music) music = createjs.Sound.play("vogue-midi", { loop: -1 });
+	// 	else music.paused = !music.paused;
 
-	i = 1;
-	file = null;
-	while(true)
-	{
-		file = fileExists("face", i);
-		if (!file) break;
-
-		var facebmp = new createjs.Bitmap(file);
-		facebmp.regX = facebmp.getBounds().width/2;
-		facebmp.regY = facebmp.getBounds().height/2;
-		faces.push(facebmp);
-
-		i++;
-	}
-	currentFace = Math.floor(Math.random() * (faces.length));
-	face.addChild(faces[currentFace]);
-
-	skinToneChanger = new createjs.Bitmap(queue.getResult("skintonechanger"));
-	skinToneChanger.x = 1670;
-	skinToneChanger.y = 495;
-	skinToneChanger.cursor = "pointer";
-	skinToneChanger.on("click", function(evt)
-	{
-		body.removeAllChildren();
-		currentSkinTone++;
-		if (currentSkinTone == bodies.length) currentSkinTone = 0;
-		body.addChild(bodies[currentSkinTone]);
-	});
-
-	faceChanger = new createjs.Bitmap(queue.getResult("facechanger"));
-	faceChanger.x = 1670;
-	faceChanger.y = 670;
-	faceChanger.cursor = "pointer";
-	faceChanger.on("click", function(evt)
-	{
-		face.removeAllChildren();
-		currentFace++;
-		if (currentFace == faces.length) currentFace = 0;
-		face.addChild(faces[currentFace]);
-	});
-
-	refresh = new createjs.Bitmap(queue.getResult("refresh"));
-	refresh.x = 1685;
-	refresh.y = 850;
-	refresh.cursor = "pointer";
-	refresh.on("click", function(evt)
-	{
-		restartGame();
-	});
-
-	initClothingItems("hair");
-	initClothingItems("neck");
-	initClothingItems("top");
-	initClothingItems("bottom");
-	initClothingItems("beard");
-	initClothingItems("cat");
-	initClothingItems("shoes");
-	initClothingItems("hat");
-	initClothingItems("octopus");
-	initClothingItems("accessory");
-	initClothingItems("mustache");
-
-	prompt = new createjs.Text("", "32px Open Sans", "#333333");
-	prompt.textAlign = "center";
-	prompt.x = ACTUAL_WIDTH/2;
-	prompt.y = ACTUAL_HEIGHT - 60;
-
-	inspiration = new createjs.Shape(new createjs.Graphics().beginFill("rgba(0,0,0,0.01)").drawRect(0, ACTUAL_HEIGHT-80, ACTUAL_WIDTH, 66));
-	inspiration.cursor = "pointer";
-	inspiration.on("click", function(evt)
-	{
-		changeInspirationText();
-	});
-
-	grammar = tracery.createGrammar(text);
-	grammar.addModifiers(baseEngModifiers);
-
-	soundToggle = new createjs.Container();
-	soundOff = new createjs.Bitmap(queue.getResult("soundoff"));
-	soundOn = new createjs.Bitmap(queue.getResult("soundon"));
-	soundToggle.x = 1750;
-	soundToggle.y = 50;
-	soundToggle.cursor = "pointer";
-	soundToggle.addChild(soundOff);
-	soundToggle.on("click", function(evt)
-	{
-		if (!music) music = createjs.Sound.play("vogue-midi", { loop: -1 });
-		else music.paused = !music.paused;
-
-		soundToggle.removeAllChildren();
-		if (music.paused) soundToggle.addChild(soundOff);
-		else soundToggle.addChild(soundOn);
-	});
+	// 	soundToggle.removeAllChildren();
+	// 	if (music.paused) soundToggle.addChild(soundOff);
+	// 	else soundToggle.addChild(soundOn);
+	// });
 }
 
 function startGame()
@@ -140,15 +53,8 @@ function startGame()
 
 	stage.addChild(bg);
 	stage.addChild(body);
-	stage.addChild(face);
-	stage.addChild(skinToneChanger);
-	stage.addChild(faceChanger);
-	stage.addChild(refresh);
-	stage.addChild(soundToggle);
-
-	changeInspirationText();
-	stage.addChild(prompt);
-	stage.addChild(inspiration);
+	// stage.addChild(refresh);
+	// stage.addChild(soundToggle);
 
 	var n;
 	for (n of clothing)
@@ -205,13 +111,6 @@ function placeClothingItem(item)
 	var zindex = Math.floor(Math.random() * stage.numChildren) + 1;
 
 	stage.addChildAt(item, zindex);
-}
-
-function changeInspirationText()
-{
-	var str = grammar.flatten("#prompt#");
-	prompt.text = str.replace("%", "#");
-	if (prompt.getMeasuredWidth() > ACTUAL_WIDTH) changeInspirationText();
 }
 
 function fileExists(type, i)
